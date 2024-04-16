@@ -4,17 +4,31 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.compose.rememberNavController
+import com.benki.taskmanager.navigation.SetupNavGraph
+import com.benki.taskmanager.presentation.MainViewModel
 import com.benki.taskmanager.ui.theme.TaskManagerTheme
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
+
+    @Inject
+    lateinit var mainViewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        installSplashScreen().setKeepOnScreenCondition {
+            mainViewModel.loading.value
+        }
         setContent {
             TaskManagerTheme {
                 // A surface container using the 'background' color from the theme
@@ -22,25 +36,20 @@ class MainActivity : ComponentActivity() {
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    Greeting("Android")
+                    val startDestination by mainViewModel.startDestination.collectAsStateWithLifecycle()
+                    val navController = rememberNavController()
+                    Scaffold { contentPadding ->
+                        SetupNavGraph(
+                            navHostController = navController,
+                            modifier = Modifier.padding(contentPadding),
+                            startDestination = startDestination,
+                            updateOnBoardingVisited = mainViewModel::updateOnBoardingVisited
+                        )
+                    }
                 }
             }
         }
     }
 }
 
-@Composable
-fun Greeting(name: String, modifier: Modifier = Modifier) {
-    Text(
-        text = "Hello $name!",
-        modifier = modifier
-    )
-}
 
-@Preview(showBackground = true)
-@Composable
-fun GreetingPreview() {
-    TaskManagerTheme {
-        Greeting("Android")
-    }
-}

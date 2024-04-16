@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">Task Manager</string>
+    <string name="onboarding_title">Manage Your Daily Task</string>
+    <string name="onboarding_description">You can organize your daily projects and tasks on a  regular basis and manage your time well and neatly.</string>
 </resources>
