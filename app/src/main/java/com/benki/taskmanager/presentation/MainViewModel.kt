@@ -1,18 +1,13 @@
 package com.benki.taskmanager.presentation
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.benki.taskmanager.data.constants.LogConstants
 import com.benki.taskmanager.data.constants.NavigationRoutes
 import com.benki.taskmanager.data.repository.UserPreferencesRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -26,6 +21,9 @@ class MainViewModel @Inject constructor(private val userPreferencesRepository: U
     private val _startDestination: MutableStateFlow<String> =
         MutableStateFlow(NavigationRoutes.ON_BOARDING_ROUTE)
     val startDestination: StateFlow<String> = _startDestination.asStateFlow()
+
+    private val _modalVisible: MutableStateFlow<Boolean> = MutableStateFlow(false)
+    val modalVisible: StateFlow<Boolean> = _modalVisible.asStateFlow()
 
     init {
         viewModelScope.launch(Dispatchers.IO) {
@@ -42,6 +40,10 @@ class MainViewModel @Inject constructor(private val userPreferencesRepository: U
         viewModelScope.launch {
             userPreferencesRepository.updateOnBoardingVisit(true)
         }
+    }
+
+    fun toggleModal(visible: Boolean) {
+        _modalVisible.update { visible }
     }
 
 }

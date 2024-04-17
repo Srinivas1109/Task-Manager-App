@@ -3,6 +3,7 @@ package com.benki.taskmanager
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
@@ -15,6 +16,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.compose.rememberNavController
 import com.benki.taskmanager.navigation.SetupNavGraph
 import com.benki.taskmanager.presentation.MainViewModel
+import com.benki.taskmanager.ui.theme.TaskManagerApp
 import com.benki.taskmanager.ui.theme.TaskManagerTheme
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -26,6 +28,7 @@ class MainActivity : ComponentActivity() {
     lateinit var mainViewModel: MainViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         installSplashScreen().setKeepOnScreenCondition {
             mainViewModel.loading.value
         }
@@ -37,15 +40,13 @@ class MainActivity : ComponentActivity() {
                     color = MaterialTheme.colorScheme.background
                 ) {
                     val startDestination by mainViewModel.startDestination.collectAsStateWithLifecycle()
-                    val navController = rememberNavController()
-                    Scaffold { contentPadding ->
-                        SetupNavGraph(
-                            navHostController = navController,
-                            modifier = Modifier.padding(contentPadding),
-                            startDestination = startDestination,
-                            updateOnBoardingVisited = mainViewModel::updateOnBoardingVisited
-                        )
-                    }
+                    val modalVisible by mainViewModel.modalVisible.collectAsStateWithLifecycle()
+                    TaskManagerApp(
+                        startDestination = startDestination,
+                        updateOnBoardingVisited = mainViewModel::updateOnBoardingVisited,
+                        modalVisible = modalVisible,
+                        toggleModal = mainViewModel::toggleModal
+                    )
                 }
             }
         }

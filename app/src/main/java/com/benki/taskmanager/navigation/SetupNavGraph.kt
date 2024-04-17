@@ -6,8 +6,13 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.benki.taskmanager.data.constants.NavigationRoutes
+import com.benki.taskmanager.presentation.createproject.CreateProjectScreen
+import com.benki.taskmanager.presentation.createtask.CreateTaskScreen
 import com.benki.taskmanager.presentation.home.HomeScreen
+import com.benki.taskmanager.presentation.notifications.NotificationScreen
 import com.benki.taskmanager.presentation.onboarding.OnBoardingScreen
+import com.benki.taskmanager.presentation.profile.ProfileScreen
+import com.benki.taskmanager.presentation.report.ReportScreen
 
 @Composable
 fun SetupNavGraph(
@@ -29,6 +34,21 @@ fun SetupNavGraph(
         }
         composable(route = NavigationRoutes.HOME) {
             HomeScreen()
+        }
+        composable(route = NavigationRoutes.NOTIFICATIONS) {
+            NotificationScreen()
+        }
+        composable(route = NavigationRoutes.REPORT) {
+            ReportScreen()
+        }
+        composable(route = NavigationRoutes.PROFILE) {
+            ProfileScreen()
+        }
+        composable(route = NavigationRoutes.CREATE_TASK) {
+            CreateTaskScreen()
+        }
+        composable(route = NavigationRoutes.CREATE_PROJECT) {
+            CreateProjectScreen()
         }
     }
 }
