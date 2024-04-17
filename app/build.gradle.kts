@@ -87,4 +87,14 @@ dependencies {
 
     // Splash screen
     implementation(libs.androidx.core.splashscreen)
+
+    // Room
+    implementation(libs.androidx.room.runtime)
+    kapt(libs.androidx.room.compiler)
+    implementation(libs.androidx.room.ktx)
+}
+
+// Allow references to generated code
+kapt {
+    correctErrorTypes = true
 }
