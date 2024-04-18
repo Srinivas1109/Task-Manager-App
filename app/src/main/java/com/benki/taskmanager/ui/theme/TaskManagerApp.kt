@@ -3,7 +3,9 @@ package com.benki.taskmanager.ui.theme
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideIn
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOut
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -23,14 +25,18 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.benki.taskmanager.data.constants.NavigationRoutes.CREATE_PROJECT
 import com.benki.taskmanager.data.constants.NavigationRoutes.CREATE_TASK
+import com.benki.taskmanager.data.constants.NavigationRoutes.HOME
 import com.benki.taskmanager.navigation.SetupNavGraph
 import com.benki.taskmanager.presentation.components.TaskManagerBottomBar
 
@@ -43,11 +49,24 @@ fun TaskManagerApp(
 ) {
     val navController = rememberNavController()
     Scaffold(bottomBar = {
-        TaskManagerBottomBar(
-            navController = navController,
-            toggleModal = toggleModal,
-            modalVisible = modalVisible
-        )
+        val destination by navController.currentBackStackEntryAsState()
+        val activeScreen = destination?.destination?.route ?: ""
+        AnimatedVisibility(
+            visible = activeScreen != CREATE_TASK && activeScreen != CREATE_PROJECT,
+            enter = slideIn {
+                            IntOffset(0, it.height)
+            },
+            exit = slideOut{
+                IntOffset(0, it.height - 10)
+            }
+        ) {
+            TaskManagerBottomBar(
+                navController = navController,
+                toggleModal = toggleModal,
+                modalVisible = modalVisible,
+                activeScreen = activeScreen
+            )
+        }
     }) { contentPadding ->
         Box(
             modifier = Modifier
@@ -95,7 +114,11 @@ fun TaskManagerApp(
                                     .clip(RoundedCornerShape(8.dp))
                                     .clickable {
                                         toggleModal(false)
-                                        navController.navigate(CREATE_TASK)
+                                        navController.navigate(CREATE_TASK) {
+                                            popUpTo(HOME) {
+                                                inclusive = false
+                                            }
+                                        }
                                     },
                                 shape = RoundedCornerShape(8.dp)
                             ) {
@@ -120,7 +143,11 @@ fun TaskManagerApp(
                                     .clip(RoundedCornerShape(8.dp))
                                     .clickable {
                                         toggleModal(false)
-                                        navController.navigate(CREATE_PROJECT)
+                                        navController.navigate(CREATE_PROJECT) {
+                                            popUpTo(HOME) {
+                                                inclusive = false
+                                            }
+                                        }
                                     },
                                 shape = RoundedCornerShape(8.dp)
                             ) {

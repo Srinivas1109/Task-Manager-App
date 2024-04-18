@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.benki.taskmanager.data.constants.NavigationRoutes
+import com.benki.taskmanager.data.constants.NavigationRoutes.HOME
 import com.benki.taskmanager.presentation.createproject.CreateProjectScreen
 import com.benki.taskmanager.presentation.createtask.CreateTaskScreen
 import com.benki.taskmanager.presentation.home.HomeScreen
@@ -29,10 +30,10 @@ fun SetupNavGraph(
         composable(route = NavigationRoutes.ON_BOARDING_ROUTE) {
             OnBoardingScreen(navigateToHome = {
                 updateOnBoardingVisited()
-                navHostController.navigate(NavigationRoutes.HOME)
+                navHostController.navigate(HOME)
             })
         }
-        composable(route = NavigationRoutes.HOME) {
+        composable(route = HOME) {
             HomeScreen()
         }
         composable(route = NavigationRoutes.NOTIFICATIONS) {
@@ -48,7 +49,15 @@ fun SetupNavGraph(
             CreateTaskScreen()
         }
         composable(route = NavigationRoutes.CREATE_PROJECT) {
-            CreateProjectScreen()
+            CreateProjectScreen(
+                onBackButtonClick = { navHostController.popBackStack() },
+                onProjectCreate = {
+                    navHostController.navigate(HOME) {
+                        popUpTo(HOME) {
+                            inclusive = true
+                        }
+                    }
+                })
         }
     }
 }

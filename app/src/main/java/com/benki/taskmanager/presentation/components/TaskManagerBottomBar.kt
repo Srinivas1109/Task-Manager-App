@@ -20,12 +20,10 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
 import com.benki.taskmanager.data.constants.NavigationRoutes.HOME
 import com.benki.taskmanager.data.constants.NavigationRoutes.NOTIFICATIONS
 import com.benki.taskmanager.data.constants.NavigationRoutes.PROFILE
@@ -36,11 +34,9 @@ fun TaskManagerBottomBar(
     modifier: Modifier = Modifier,
     navController: NavController,
     modalVisible: Boolean = false,
+    activeScreen: String = "",
     toggleModal: (Boolean) -> Unit,
 ) {
-    val destination by navController.currentBackStackEntryAsState()
-    val activeScreen = destination?.destination?.route ?: ""
-
     BottomAppBar(
         actions = {
             NavigationBarItem(

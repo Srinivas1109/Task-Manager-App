@@ -8,6 +8,7 @@ data class Project(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,
     val name: String,
+    val description: String = "",
     val createdOn: Long = System.currentTimeMillis(),
     val modifiedOn: Long = System.currentTimeMillis(),
 )
