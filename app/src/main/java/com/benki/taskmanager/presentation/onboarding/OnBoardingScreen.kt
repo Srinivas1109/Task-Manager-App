@@ -25,6 +25,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.benki.taskmanager.R
 import com.benki.taskmanager.ui.theme.TaskManagerTheme
 
@@ -81,6 +82,8 @@ fun OnBoardingScreen(modifier: Modifier = Modifier, navigateToHome: () -> Unit) 
                 Text(
                     text = "Get Started",
                     fontStyle = MaterialTheme.typography.bodyMedium.fontStyle,
+                    fontSize = 18.sp,
+                    modifier = modifier.padding(vertical = 8.dp)
                 )
             }
         }

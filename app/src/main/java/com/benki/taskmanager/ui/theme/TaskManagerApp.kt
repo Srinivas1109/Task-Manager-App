@@ -37,6 +37,7 @@ import androidx.navigation.compose.rememberNavController
 import com.benki.taskmanager.data.constants.NavigationRoutes.CREATE_PROJECT
 import com.benki.taskmanager.data.constants.NavigationRoutes.CREATE_TASK
 import com.benki.taskmanager.data.constants.NavigationRoutes.HOME
+import com.benki.taskmanager.data.constants.NavigationRoutes.ON_BOARDING_ROUTE
 import com.benki.taskmanager.navigation.SetupNavGraph
 import com.benki.taskmanager.presentation.components.TaskManagerBottomBar
 
@@ -52,7 +53,7 @@ fun TaskManagerApp(
         val destination by navController.currentBackStackEntryAsState()
         val activeScreen = destination?.destination?.route ?: ""
         AnimatedVisibility(
-            visible = activeScreen != CREATE_TASK && activeScreen != CREATE_PROJECT,
+            visible = activeScreen != CREATE_TASK && activeScreen != CREATE_PROJECT && activeScreen != ON_BOARDING_ROUTE,
             enter = slideIn {
                             IntOffset(0, it.height)
             },

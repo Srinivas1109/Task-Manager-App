@@ -6,6 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.benki.taskmanager.data.constants.NavigationRoutes
+import com.benki.taskmanager.data.constants.NavigationRoutes.CREATE_PROJECT
 import com.benki.taskmanager.data.constants.NavigationRoutes.HOME
 import com.benki.taskmanager.presentation.createproject.CreateProjectScreen
 import com.benki.taskmanager.presentation.createtask.CreateTaskScreen
@@ -46,9 +47,16 @@ fun SetupNavGraph(
             ProfileScreen()
         }
         composable(route = NavigationRoutes.CREATE_TASK) {
-            CreateTaskScreen()
+            CreateTaskScreen(onBackButtonClick = { navHostController.popBackStack() },
+                onTaskCreate = {
+                    navHostController.navigate(HOME) {
+                        popUpTo(HOME) {
+                            inclusive = true
+                        }
+                    }
+                }, onClickCreateProject = { navHostController.navigate(CREATE_PROJECT) })
         }
-        composable(route = NavigationRoutes.CREATE_PROJECT) {
+        composable(route = CREATE_PROJECT) {
             CreateProjectScreen(
                 onBackButtonClick = { navHostController.popBackStack() },
                 onProjectCreate = {

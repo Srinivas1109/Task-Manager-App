@@ -3,6 +3,7 @@ package com.benki.taskmanager.data.model
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.benki.taskmanager.data.constants.AppConstants.REMINDER_MILLISECONDS
 import com.benki.taskmanager.data.constants.TaskPriority
 import com.benki.taskmanager.data.constants.TaskStatus
 
@@ -18,15 +19,16 @@ import com.benki.taskmanager.data.constants.TaskStatus
 data class Task(
     @PrimaryKey(autoGenerate = true)
     val id: Long = 0L,
-    val projectId: Int? = null,
+    val projectId: Long? = null,
     val title: String,
-    val description: String,
-    val completed: Boolean = false,
-    val deadline: Long? = null,
-    val status: TaskStatus = TaskStatus.PENDING,
+    val description: String = "",
+    val deadlineDate: Long? = null,
+    val deadlineTime: Long? = null,
+    val scheduled: Boolean = false,
+    val status: TaskStatus = TaskStatus.NOT_STARTED,
     val priority: TaskPriority = TaskPriority.NORMAL,
     val progress: Float = 0f,
-    val reminder: Long? = null,
+    val reminder: Long? = REMINDER_MILLISECONDS.first(),
     val createdOn: Long = System.currentTimeMillis(),
     val modifiedOn: Long = System.currentTimeMillis(),
 )
