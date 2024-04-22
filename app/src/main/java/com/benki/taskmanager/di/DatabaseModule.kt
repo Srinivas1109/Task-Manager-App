@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.room.Room
 import com.benki.taskmanager.data.dao.ProjectDao
 import com.benki.taskmanager.data.dao.TaskDao
+import com.benki.taskmanager.data.dao.TaskWithProjectDao
 import com.benki.taskmanager.data.database.TaskManagerDatabase
 import dagger.Module
 import dagger.Provides
@@ -28,4 +29,8 @@ object DatabaseModule {
     @Provides
     @Singleton
     fun provideProjectDao(database: TaskManagerDatabase): ProjectDao = database.projectDao()
+
+    @Provides
+    @Singleton
+    fun provideTaskWithProjectDao(database: TaskManagerDatabase): TaskWithProjectDao = database.tasksWithProjectDao()
 }

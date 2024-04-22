@@ -18,6 +18,15 @@ object DateTimeUtils {
         return ((hour * 60 * 60 * 1000) + (minute * 60 * 1000)).toLong()
     }
 
+    fun convertMillisToTime(millis: Long): String {
+        val totalSeconds = millis / 1000
+        val hours = totalSeconds / 3600
+        val minutes = (totalSeconds % 3600) / 60
+        val formattedHours = hours.toString().padStart(2, '0')
+        val formattedMinutes = minutes.toString().padStart(2, '0')
+        return "$formattedHours:$formattedMinutes"
+    }
+
     fun convertMillsToMinutes(mills: Long): Int {
         return (mills / 1000 / 60).toInt()
     }

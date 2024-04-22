@@ -19,4 +19,6 @@ class TaskRepository(private val taskDao: TaskDao) {
 
     fun getTasks() : Flow<List<Task>> = taskDao.getTasks()
 
+    fun getTaskStatusCount(status: String) : Flow<Int> = taskDao.getTaskStatusCount(status)
+
 }

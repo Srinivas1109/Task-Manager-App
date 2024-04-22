@@ -47,7 +47,12 @@ class CreateTaskViewModel @Inject constructor(
     }
 
     fun updateTaskStatus(taskStatus: TaskStatus) {
-        _task.update { it.copy(status = taskStatus) }
+        _task.update {
+            it.copy(
+                status = taskStatus,
+                progress = if (taskStatus == TaskStatus.NOT_STARTED) 0f else if (taskStatus == TaskStatus.COMPLETED) 100f else it.progress
+            )
+        }
     }
 
     fun updateTaskProject(project: Project) {
@@ -82,6 +87,15 @@ class CreateTaskViewModel @Inject constructor(
 
     fun updateReminder(time: Long) {
         _task.update { it.copy(reminder = time) }
+    }
+
+    fun updateTaskProgress(progress: Float) {
+        _task.update {
+            it.copy(
+                progress = progress,
+                status = if (progress.toInt() > 0) TaskStatus.IN_PROGRESS else if (progress.toInt() > 99) TaskStatus.COMPLETED else it.status
+            )
+        }
     }
 
     fun toggleScheduleVisibility(visible: Boolean) {

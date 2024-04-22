@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.benki.taskmanager.data.constants.TaskStatus
 import com.benki.taskmanager.data.model.Task
 import kotlinx.coroutines.flow.Flow
 
@@ -22,4 +23,7 @@ interface TaskDao {
 
     @Query("SELECT * FROM tasks ORDER BY modifiedOn DESC")
     fun getTasks() : Flow<List<Task>>
+
+    @Query("SELECT COUNT(*) FROM tasks WHERE status = :status")
+    fun getTaskStatusCount(status: String) : Flow<Int>
 }

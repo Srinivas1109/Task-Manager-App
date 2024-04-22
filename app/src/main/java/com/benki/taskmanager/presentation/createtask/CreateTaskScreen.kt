@@ -37,8 +37,10 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Text
 import androidx.compose.material3.TimePicker
 import androidx.compose.material3.rememberDatePickerState
@@ -171,6 +173,10 @@ fun CreateTaskScreen(
                     }
                 }
             }
+
+            Spacer(modifier = modifier.height(16.dp))
+            Text(text = "${task.progress.toInt()}% complete", modifier = modifier.fillMaxWidth(), textAlign = TextAlign.End)
+            Slider(value = task.progress, valueRange = 0f..100f, onValueChange = viewmodel::updateTaskProgress)
 
             Column(modifier = modifier.fillMaxWidth()) {
                 Spacer(modifier = modifier.heightIn(24.dp))
