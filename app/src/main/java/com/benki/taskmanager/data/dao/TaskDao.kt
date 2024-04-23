@@ -22,8 +22,11 @@ interface TaskDao {
     suspend fun deleteTask(task: Task)
 
     @Query("SELECT * FROM tasks ORDER BY modifiedOn DESC")
-    fun getTasks() : Flow<List<Task>>
+    fun getTasks(): Flow<List<Task>>
 
     @Query("SELECT COUNT(*) FROM tasks WHERE status = :status")
-    fun getTaskStatusCount(status: String) : Flow<Int>
+    fun getTaskStatusCount(status: String): Flow<Int>
+
+    @Query("SELECT * FROM tasks WHERE status = :status")
+    fun getTasksByStatus(status: String): Flow<List<Task>>
 }

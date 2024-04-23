@@ -1,5 +1,6 @@
-package com.benki.taskmanager.ui.theme
+package com.benki.taskmanager.presentation
 
+import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -16,6 +17,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -37,11 +40,13 @@ import androidx.navigation.compose.rememberNavController
 import com.benki.taskmanager.data.constants.NavigationRoutes.CREATE_PROJECT
 import com.benki.taskmanager.data.constants.NavigationRoutes.CREATE_TASK
 import com.benki.taskmanager.data.constants.NavigationRoutes.HOME
+import com.benki.taskmanager.data.constants.NavigationRoutes.IGNORE_BOTTOM_BAR
 import com.benki.taskmanager.data.constants.NavigationRoutes.ON_BOARDING_ROUTE
 import com.benki.taskmanager.navigation.SetupNavGraph
 import com.benki.taskmanager.presentation.components.TaskManagerBottomBar
 
 @Composable
+
 fun TaskManagerApp(
     startDestination: String,
     modalVisible: Boolean = false,
@@ -53,7 +58,7 @@ fun TaskManagerApp(
         val destination by navController.currentBackStackEntryAsState()
         val activeScreen = destination?.destination?.route ?: ""
         AnimatedVisibility(
-            visible = activeScreen != CREATE_TASK && activeScreen != CREATE_PROJECT && activeScreen != ON_BOARDING_ROUTE,
+            visible = !IGNORE_BOTTOM_BAR.contains(activeScreen),
             enter = slideIn {
                             IntOffset(0, it.height)
             },
@@ -72,7 +77,6 @@ fun TaskManagerApp(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(contentPadding)
         ) {
             SetupNavGraph(
                 navHostController = navController,
@@ -87,7 +91,7 @@ fun TaskManagerApp(
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth(0.75f),
+                        .fillMaxWidth(0.75f).padding(contentPadding),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceAround
                 ) {

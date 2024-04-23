@@ -3,11 +3,14 @@ package com.benki.taskmanager.navigation
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.benki.taskmanager.data.constants.NavigationRoutes
 import com.benki.taskmanager.data.constants.NavigationRoutes.CREATE_PROJECT
 import com.benki.taskmanager.data.constants.NavigationRoutes.HOME
+import com.benki.taskmanager.data.constants.NavigationRoutes.TASKS
 import com.benki.taskmanager.presentation.createproject.CreateProjectScreen
 import com.benki.taskmanager.presentation.createtask.CreateTaskScreen
 import com.benki.taskmanager.presentation.home.HomeScreen
@@ -15,6 +18,7 @@ import com.benki.taskmanager.presentation.notifications.NotificationScreen
 import com.benki.taskmanager.presentation.onboarding.OnBoardingScreen
 import com.benki.taskmanager.presentation.profile.ProfileScreen
 import com.benki.taskmanager.presentation.report.ReportScreen
+import com.benki.taskmanager.presentation.tasks.Tasks
 
 @Composable
 fun SetupNavGraph(
@@ -35,7 +39,7 @@ fun SetupNavGraph(
             })
         }
         composable(route = HOME) {
-            HomeScreen()
+            HomeScreen(navigateToTasks = { navHostController.navigate("$TASKS/${it.name}") })
         }
         composable(route = NavigationRoutes.NOTIFICATIONS) {
             NotificationScreen()
@@ -66,6 +70,13 @@ fun SetupNavGraph(
                         }
                     }
                 })
+        }
+
+        composable(route = "$TASKS/{status}", arguments = listOf(navArgument(name = "status") {
+            type = NavType.StringType
+        })) {
+            val status = it.arguments?.getString("status")
+            Tasks(status = status!!, navigateBack = { navHostController.popBackStack() })
         }
     }
 }

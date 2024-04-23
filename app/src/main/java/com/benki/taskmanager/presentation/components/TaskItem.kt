@@ -21,6 +21,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.benki.taskmanager.data.model.Task
 import com.benki.taskmanager.data.model.TaskWithProject
 import com.benki.taskmanager.utils.DateTimeUtils
 
@@ -28,6 +29,9 @@ import com.benki.taskmanager.utils.DateTimeUtils
 fun TaskItem(
     modifier: Modifier = Modifier,
     taskWithProject: TaskWithProject,
+    activeTask: Task,
+    updateProgress: (Task) -> Unit,
+    updateTask: () -> Unit
 ) {
     val task = taskWithProject.task
     Card(
@@ -70,15 +74,18 @@ fun TaskItem(
                 )
             }
             Slider(
-                value = task.progress,
-                onValueChange = { },
+                value = if (activeTask.id == task.id) activeTask.progress else task.progress,
+                onValueChange = {
+                    updateProgress(task.copy(progress = it))
+                },
                 modifier = Modifier.fillMaxWidth(),
                 valueRange = 0f..100f,
                 colors = SliderDefaults.colors(
                     thumbColor = task.status.color,
                     activeTrackColor = task.status.color,
                     inactiveTrackColor = MaterialTheme.colorScheme.onBackground
-                )
+                ),
+                onValueChangeFinished = updateTask
             )
             if (task.deadlineDate != null || task.deadlineTime != null) {
                 Row(
