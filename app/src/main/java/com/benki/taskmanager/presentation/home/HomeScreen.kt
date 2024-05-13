@@ -50,7 +50,7 @@ fun HomeScreen(
             .fillMaxSize()
     ) {
         LazyColumn {
-            item {
+            item(key = "task status header") {
                 Column {
                     Row(
                         modifier = modifier.fillMaxWidth(),
@@ -104,7 +104,7 @@ fun HomeScreen(
                     Spacer(modifier = modifier.height(16.dp))
                 }
             }
-            items(items = tasksWithProject) {
+            items(items = tasksWithProject, key = {it.task.id}) {
                 TaskItem(
                     taskWithProject = it,
                     activeTask = activeTask,
