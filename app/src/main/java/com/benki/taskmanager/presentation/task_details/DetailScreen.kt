@@ -1,4 +1,4 @@
-package com.benki.taskmanager.presentation.createtask
+package com.benki.taskmanager.presentation.task_details
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
@@ -39,7 +39,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Slider
@@ -49,6 +48,7 @@ import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -61,30 +61,30 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.benki.taskmanager.data.constants.AppConstants.REMINDER_MILLISECONDS
+import com.benki.taskmanager.data.constants.AppConstants
 import com.benki.taskmanager.data.constants.TaskStatus
 import com.benki.taskmanager.presentation.components.PrimaryButton
 import com.benki.taskmanager.presentation.components.TaskTextFiled
 import com.benki.taskmanager.presentation.components.TimePickerDialog
 import com.benki.taskmanager.utils.DateTimeUtils
+import com.benki.taskmanager.utils.DateTimeUtils.convertMillisToTime
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CreateTaskScreen(
+fun DetailScreen(
     modifier: Modifier = Modifier,
-    viewmodel: CreateTaskViewModel = hiltViewModel(),
-    onBackButtonClick: () -> Unit,
-    onTaskCreate: () -> Unit,
-    onClickCreateProject: () -> Unit,
+    taskId: Long,
+    navigateBack: () -> Unit,
+    viewModel: DetailedTaskViewModel = hiltViewModel()
 ) {
-    val task by viewmodel.task.collectAsStateWithLifecycle()
-    val projects by viewmodel.projects.collectAsStateWithLifecycle()
-    val showSheet by viewmodel.showSheet.collectAsStateWithLifecycle()
-    val showDatePicker by viewmodel.showDatePicker.collectAsStateWithLifecycle()
-    val showTimePicker by viewmodel.showTimePicker.collectAsStateWithLifecycle()
-    val selectedProject by viewmodel.selectedProject.collectAsStateWithLifecycle()
+    val task by viewModel.task.collectAsStateWithLifecycle()
+    val projects by viewModel.projects.collectAsStateWithLifecycle()
+    val showSheet by viewModel.showSheet.collectAsStateWithLifecycle()
+    val showDatePicker by viewModel.showDatePicker.collectAsStateWithLifecycle()
+    val showTimePicker by viewModel.showTimePicker.collectAsStateWithLifecycle()
+    val selectedProject by viewModel.selectedProject.collectAsStateWithLifecycle()
     val modalBottomSheetScaffoldState = rememberModalBottomSheetState(skipPartiallyExpanded = true)
     val coroutineScope = rememberCoroutineScope()
     val datePickerState =
@@ -99,7 +99,8 @@ fun CreateTaskScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp).safeDrawingPadding(),
+            .padding(16.dp)
+            .safeDrawingPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -112,7 +113,7 @@ fun CreateTaskScreen(
         ) {
             Box(modifier = modifier.fillMaxWidth()) {
                 IconButton(
-                    onClick = onBackButtonClick,
+                    onClick = navigateBack,
                     modifier = modifier
                         .align(Alignment.TopStart)
                         .size(40.dp),
@@ -124,7 +125,7 @@ fun CreateTaskScreen(
                     Icon(imageVector = Icons.Filled.ArrowBackIosNew, contentDescription = null)
                 }
                 Text(
-                    text = "Create task",
+                    text = "Update task",
                     modifier = modifier.align(Alignment.TopCenter),
                     fontSize = 26.sp,
                     fontWeight = FontWeight.Bold,
@@ -136,14 +137,14 @@ fun CreateTaskScreen(
             TaskTextFiled(
                 value = task.title,
                 title = "Task title",
-                onValueChange = viewmodel::updateTaskTitle,
+                onValueChange = viewModel::updateTaskTitle,
                 placeholder = "Type here..."
             )
             Spacer(modifier = modifier.height(30.dp))
             TaskTextFiled(
                 value = task.description,
                 title = "Task description",
-                onValueChange = viewmodel::updateTaskDescription,
+                onValueChange = viewModel::updateTaskDescription,
                 placeholder = "Type here...",
                 modifier = modifier.heightIn(min = 150.dp, max = 250.dp)
             )
@@ -157,7 +158,7 @@ fun CreateTaskScreen(
                         .horizontalScroll(rememberScrollState())
                 ) {
                     TaskStatus.entries.forEach { taskStatus ->
-                        AssistChip(onClick = { viewmodel.updateTaskStatus(taskStatus) },
+                        AssistChip(onClick = { viewModel.updateTaskStatus(taskStatus) },
                             label = { Text(text = taskStatus.statusText) },
                             modifier = modifier.padding(horizontal = 4.dp),
                             colors = AssistChipDefaults.assistChipColors(
@@ -178,8 +179,16 @@ fun CreateTaskScreen(
             }
 
             Spacer(modifier = modifier.height(16.dp))
-            Text(text = "${task.progress.toInt()}% complete", modifier = modifier.fillMaxWidth(), textAlign = TextAlign.End)
-            Slider(value = task.progress, valueRange = 0f..100f, onValueChange = viewmodel::updateTaskProgress)
+            Text(
+                text = "${task.progress.toInt()}% complete",
+                modifier = modifier.fillMaxWidth(),
+                textAlign = TextAlign.End
+            )
+            Slider(
+                value = task.progress,
+                valueRange = 0f..100f,
+                onValueChange = viewModel::updateTaskProgress
+            )
 
             Column(modifier = modifier.fillMaxWidth()) {
                 Spacer(modifier = modifier.heightIn(24.dp))
@@ -202,13 +211,13 @@ fun CreateTaskScreen(
                             fontWeight = FontWeight.Bold
                         )
                         if (task.projectId != null) {
-                            IconButton(onClick = { viewmodel.unLinkProject() }) {
+                            IconButton(onClick = { viewModel.unLinkProject() }) {
                                 Icon(
                                     imageVector = Icons.Filled.LinkOff, contentDescription = null
                                 )
                             }
                         } else {
-                            IconButton(onClick = { viewmodel.toggleModalVisibility(true) }) {
+                            IconButton(onClick = { viewModel.toggleModalVisibility(true) }) {
                                 Icon(
                                     imageVector = Icons.Filled.Link, contentDescription = null
                                 )
@@ -218,7 +227,7 @@ fun CreateTaskScreen(
                 }
                 if (showSheet) {
                     ModalBottomSheet(
-                        onDismissRequest = { viewmodel.toggleModalVisibility(false) },
+                        onDismissRequest = { viewModel.toggleModalVisibility(false) },
                         sheetState = modalBottomSheetScaffoldState
                     ) {
                         Column(
@@ -233,7 +242,7 @@ fun CreateTaskScreen(
                                 )
                                 Spacer(modifier = modifier.heightIn(16.dp))
                                 PrimaryButton(
-                                    text = "Create Project", onClick = onClickCreateProject
+                                    text = "Create Project", onClick = {}
                                 )
                             } else {
                                 Text(
@@ -252,9 +261,9 @@ fun CreateTaskScreen(
                                             .clip(RoundedCornerShape(8.dp))
                                             .padding(vertical = 8.dp)
                                             .clickable {
-                                                viewmodel.updateTaskProject(project)
+                                                viewModel.updateTaskProject(project)
                                                 coroutineScope.launch {
-                                                    viewmodel.toggleModalVisibility(false)
+                                                    viewModel.toggleModalVisibility(false)
                                                     modalBottomSheetScaffoldState.hide()
                                                 }
                                             }, colors = CardDefaults.cardColors(
@@ -293,9 +302,9 @@ fun CreateTaskScreen(
                 Checkbox(
                     checked = task.scheduled,
                     onCheckedChange = {
-                        viewmodel.toggleScheduleVisibility(it)
-                        viewmodel.updateDeadlineDate(datePickerState.selectedDateMillis!!)
-                        viewmodel.updateDeadlineTime(
+                        viewModel.toggleScheduleVisibility(it)
+                        viewModel.updateDeadlineDate(datePickerState.selectedDateMillis!!)
+                        viewModel.updateDeadlineTime(
                             DateTimeUtils.convertTimeToMillis(
                                 timePickerState.hour,
                                 timePickerState.minute
@@ -315,7 +324,7 @@ fun CreateTaskScreen(
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Card(modifier = modifier.clickable {
-                            viewmodel.toggleDatePickerVisibility(
+                            viewModel.toggleDatePickerVisibility(
                                 true
                             )
                         }) {
@@ -330,14 +339,14 @@ fun CreateTaskScreen(
                                         imageVector = Icons.Filled.CalendarMonth,
                                         contentDescription = null
                                     )
-                                    datePickerState.selectedDateMillis?.let { date ->
+                                    task.deadlineDate?.let { date ->
                                         Text(text = DateTimeUtils.convertLongToDate(date))
                                     }
                                 }
                             }
                         }
                         Card(modifier = modifier.clickable {
-                            viewmodel.toggleTimePickerVisibility(
+                            viewModel.toggleTimePickerVisibility(
                                 true
                             )
                         }) {
@@ -352,12 +361,16 @@ fun CreateTaskScreen(
                                         imageVector = Icons.Filled.AccessTime,
                                         contentDescription = null
                                     )
-                                    Text(
-                                        text = "%02d:%02d ${if (timePickerState.hour > 12) "PM" else "AM"}".format(
-                                            if (timePickerState.hour > 12) timePickerState.hour % 12 else timePickerState.hour,
-                                            timePickerState.minute
-                                        )
-                                    )
+//                                    Text(
+//                                        text = "%02d:%02d ${if (timePickerState.hour > 12) "PM" else "AM"}".format(
+//                                            if (timePickerState.hour > 12) timePickerState.hour % 12 else timePickerState.hour,
+//                                            timePickerState.minute
+//                                        )
+//                                    )
+
+                                    task.deadlineTime?.let { time ->
+                                        Text(text = convertMillisToTime(time))
+                                    }
                                 }
                             }
                         }
@@ -372,9 +385,9 @@ fun CreateTaskScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.spacedBy(4.dp)
                     ) {
-                        REMINDER_MILLISECONDS.forEach { millis ->
+                        AppConstants.REMINDER_MILLISECONDS.forEach { millis ->
                             AssistChip(
-                                onClick = { viewmodel.updateReminder(millis) },
+                                onClick = { viewModel.updateReminder(millis) },
                                 label = {
                                     Text(
                                         text = "${DateTimeUtils.convertMillsToMinutes(millis)} mins"
@@ -398,12 +411,12 @@ fun CreateTaskScreen(
             }
 
             if (showDatePicker) {
-                DatePickerDialog(onDismissRequest = { viewmodel.toggleDatePickerVisibility(false) },
+                DatePickerDialog(onDismissRequest = { viewModel.toggleDatePickerVisibility(false) },
                     confirmButton = {
                         Button(onClick = {
-                            viewmodel.toggleDatePickerVisibility(false)
+                            viewModel.toggleDatePickerVisibility(false)
                             datePickerState.selectedDateMillis?.let {
-                                viewmodel.updateDeadlineDate(
+                                viewModel.updateDeadlineDate(
                                     it
                                 )
                             }
@@ -423,11 +436,11 @@ fun CreateTaskScreen(
 
             if (showTimePicker) {
                 TimePickerDialog(
-                    onDismissRequest = { viewmodel.toggleTimePickerVisibility(false) },
+                    onDismissRequest = { viewModel.toggleTimePickerVisibility(false) },
                     confirmButton = {
                         Button(onClick = {
-                            viewmodel.toggleTimePickerVisibility(false)
-                            viewmodel.updateDeadlineTime(
+                            viewModel.toggleTimePickerVisibility(false)
+                            viewModel.updateDeadlineTime(
                                 DateTimeUtils.convertTimeToMillis(
                                     timePickerState.hour,
                                     timePickerState.minute
@@ -441,9 +454,19 @@ fun CreateTaskScreen(
                 }
             }
         }
-        PrimaryButton(text = "Create task", enabled = task.title.isNotEmpty()) {
-            viewmodel.insertTask()
-            onTaskCreate()
+        PrimaryButton(text = "Update task", enabled = task.title.isNotEmpty()) {
+            viewModel.updateTask()
+            navigateBack()
+        }
+    }
+
+    LaunchedEffect(key1 = Unit) {
+        viewModel.getTask(taskId)
+    }
+
+    LaunchedEffect(key1 = task.projectId) {
+        if (task.projectId != null) {
+            viewModel.getProject(task.projectId!!)
         }
     }
 }

@@ -9,5 +9,7 @@ object NavigationRoutes {
     const val CREATE_TASK = "create_task"
     const val CREATE_PROJECT = "create_project"
     const val TASKS = "tasks"
-    val IGNORE_BOTTOM_BAR = listOf(ON_BOARDING_ROUTE, CREATE_TASK, CREATE_PROJECT, TASKS)
+    const val ALL_TASKS = "all_tasks"
+    const val DETAIL_TASK = "detail_task"
+    val IGNORE_BOTTOM_BAR = listOf(ON_BOARDING_ROUTE, CREATE_TASK, CREATE_PROJECT, TASKS, ALL_TASKS)
 }

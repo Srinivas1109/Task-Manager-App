@@ -1,7 +1,6 @@
 package com.benki.taskmanager.presentation.components
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -19,24 +18,27 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.benki.taskmanager.data.model.Task
+import com.benki.taskmanager.data.model.TaskWithProject
 import com.benki.taskmanager.utils.DateTimeUtils
 
 @Composable
-fun TaskItem(modifier: Modifier = Modifier, task: Task, navigateToDetail: () -> Unit) {
+fun TaskWithProjectItem(
+    modifier: Modifier = Modifier,
+    taskWithProject: TaskWithProject,
+    activeTask: Task,
+    updateProgress: (Task) -> Unit,
+    updateTask: () -> Unit
+) {
+    val task = taskWithProject.task
     Card(
         modifier = modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp, horizontal = 16.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .clickable {
-                navigateToDetail()
-            }
+            .padding(vertical = 8.dp)
     ) {
         Column(
             modifier = Modifier
@@ -80,8 +82,9 @@ fun TaskItem(modifier: Modifier = Modifier, task: Task, navigateToDetail: () -> 
                 )
             }
             Slider(
-                value = task.progress,
+                value = if (activeTask.id == task.id) activeTask.progress else task.progress,
                 onValueChange = {
+                    updateProgress(task.copy(progress = it))
                 },
                 modifier = Modifier.fillMaxWidth(),
                 valueRange = 0f..100f,
@@ -90,7 +93,7 @@ fun TaskItem(modifier: Modifier = Modifier, task: Task, navigateToDetail: () -> 
                     activeTrackColor = task.status.color,
                     inactiveTrackColor = MaterialTheme.colorScheme.onBackground
                 ),
-                enabled = false
+                onValueChangeFinished = updateTask
             )
             if (task.deadlineDate != null || task.deadlineTime != null) {
                 Row(

@@ -21,4 +21,6 @@ class ProjectRepository(private val projectDao: ProjectDao) {
 
     fun getTasks(): Flow<List<Project>> = projectDao.getProjects()
 
+    fun getProjectById(projectId: Long): Flow<Project> = projectDao.getProjectById(projectId)
+
 }

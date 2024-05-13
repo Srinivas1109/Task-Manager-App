@@ -8,9 +8,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
 import com.benki.taskmanager.data.constants.NavigationRoutes
+import com.benki.taskmanager.data.constants.NavigationRoutes.ALL_TASKS
 import com.benki.taskmanager.data.constants.NavigationRoutes.CREATE_PROJECT
+import com.benki.taskmanager.data.constants.NavigationRoutes.DETAIL_TASK
 import com.benki.taskmanager.data.constants.NavigationRoutes.HOME
 import com.benki.taskmanager.data.constants.NavigationRoutes.TASKS
+import com.benki.taskmanager.presentation.task_details.DetailScreen
+import com.benki.taskmanager.presentation.all_tasks.AllTasks
 import com.benki.taskmanager.presentation.createproject.CreateProjectScreen
 import com.benki.taskmanager.presentation.createtask.CreateTaskScreen
 import com.benki.taskmanager.presentation.home.HomeScreen
@@ -39,7 +43,9 @@ fun SetupNavGraph(
             })
         }
         composable(route = HOME) {
-            HomeScreen(navigateToTasks = { navHostController.navigate("$TASKS/${it.name}") })
+            HomeScreen(
+                navigateToTasks = { navHostController.navigate("$TASKS/${it.name}") },
+                navigateToAllTasks = { navHostController.navigate(ALL_TASKS) })
         }
         composable(route = NavigationRoutes.NOTIFICATIONS) {
             NotificationScreen()
@@ -77,6 +83,19 @@ fun SetupNavGraph(
         })) {
             val status = it.arguments?.getString("status")
             Tasks(status = status!!, navigateBack = { navHostController.popBackStack() })
+        }
+
+        composable(route = ALL_TASKS) {
+            AllTasks(
+                navigateBack = { navHostController.popBackStack() },
+                navigateToTask = { taskId -> navHostController.navigate("$DETAIL_TASK/${taskId}") })
+        }
+
+        composable(route = "$DETAIL_TASK/{taskId}", arguments = listOf(navArgument(name = "taskId") {
+            type = NavType.LongType
+        })){
+            val taskId = it.arguments?.getLong("taskId")
+            taskId?.let { id -> DetailScreen(taskId = id, navigateBack = { navHostController.popBackStack() }) }
         }
     }
 }

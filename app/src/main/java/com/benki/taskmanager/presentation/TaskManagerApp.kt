@@ -1,6 +1,5 @@
 package com.benki.taskmanager.presentation
 
-import android.annotation.SuppressLint
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -17,8 +16,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -27,7 +24,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -39,9 +35,9 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.benki.taskmanager.data.constants.NavigationRoutes.CREATE_PROJECT
 import com.benki.taskmanager.data.constants.NavigationRoutes.CREATE_TASK
+import com.benki.taskmanager.data.constants.NavigationRoutes.DETAIL_TASK
 import com.benki.taskmanager.data.constants.NavigationRoutes.HOME
 import com.benki.taskmanager.data.constants.NavigationRoutes.IGNORE_BOTTOM_BAR
-import com.benki.taskmanager.data.constants.NavigationRoutes.ON_BOARDING_ROUTE
 import com.benki.taskmanager.navigation.SetupNavGraph
 import com.benki.taskmanager.presentation.components.TaskManagerBottomBar
 
@@ -58,11 +54,11 @@ fun TaskManagerApp(
         val destination by navController.currentBackStackEntryAsState()
         val activeScreen = destination?.destination?.route ?: ""
         AnimatedVisibility(
-            visible = !IGNORE_BOTTOM_BAR.contains(activeScreen),
+            visible = !IGNORE_BOTTOM_BAR.contains(activeScreen) && !activeScreen.contains(DETAIL_TASK),
             enter = slideIn {
-                            IntOffset(0, it.height)
+                IntOffset(0, it.height)
             },
-            exit = slideOut{
+            exit = slideOut {
                 IntOffset(0, it.height - 10)
             }
         ) {
@@ -91,7 +87,8 @@ fun TaskManagerApp(
             ) {
                 Column(
                     modifier = Modifier
-                        .fillMaxWidth(0.75f).padding(contentPadding),
+                        .fillMaxWidth(0.75f)
+                        .padding(contentPadding),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceAround
                 ) {

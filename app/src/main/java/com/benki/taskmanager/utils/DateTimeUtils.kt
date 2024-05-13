@@ -30,4 +30,19 @@ object DateTimeUtils {
     fun convertMillsToMinutes(mills: Long): Int {
         return (mills / 1000 / 60).toInt()
     }
+
+    fun convertLongToHHMMAMPM(date: Long): String {
+        Calendar.getInstance().apply {
+            timeInMillis = date
+
+            val hour = get(Calendar.HOUR_OF_DAY)
+            val minute = get(Calendar.MINUTE)
+            val amPm = if (hour < 12) "AM" else "PM"
+
+            val formattedHour = if (hour == 0 || hour == 12) 12 else hour % 12
+
+            return "%02d:%02d $amPm".format(formattedHour, minute)
+        }
+
+    }
 }
