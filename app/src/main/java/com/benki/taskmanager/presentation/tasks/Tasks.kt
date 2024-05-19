@@ -44,7 +44,8 @@ fun Tasks(
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = taskStatus.color,
-                    titleContentColor = Color.White
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
                 )
             )
         }

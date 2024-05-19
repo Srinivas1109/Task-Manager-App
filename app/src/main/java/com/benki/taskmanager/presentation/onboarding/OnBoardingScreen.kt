@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -34,6 +35,7 @@ fun OnBoardingScreen(modifier: Modifier = Modifier, navigateToHome: () -> Unit) 
     Surface(modifier = modifier.fillMaxSize(), color = MaterialTheme.colorScheme.primary) {
         Column(
             modifier = modifier
+                .safeDrawingPadding()
                 .fillMaxSize()
                 .padding(16.dp),
             horizontalAlignment = Alignment.CenterHorizontally,

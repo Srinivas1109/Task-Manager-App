@@ -12,6 +12,7 @@ import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
@@ -41,14 +42,16 @@ fun AllTasks(
                 title = { Text(text = "Tasks", fontWeight = FontWeight.Bold) },
                 navigationIcon = {
                     IconButton(
-                        onClick = navigateBack
+                        onClick = navigateBack,
+                        colors = IconButtonDefaults.filledIconButtonColors(contentColor = Color.White)
                     ) {
                         Icon(imageVector = Icons.Filled.ArrowBackIosNew, contentDescription = null)
                     }
                 },
                 colors = TopAppBarDefaults.topAppBarColors(
                     containerColor = MaterialTheme.colorScheme.primary,
-                    titleContentColor = Color.White
+                    titleContentColor = Color.White,
+                    navigationIconContentColor = Color.White
                 )
             )
         }

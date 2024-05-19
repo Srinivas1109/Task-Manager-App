@@ -19,6 +19,7 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,6 +54,11 @@ fun TaskManagerBottomBar(
                         contentDescription = null
                     )
                 },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    indicatorColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             )
 
             NavigationBarItem(
@@ -68,7 +74,13 @@ fun TaskManagerBottomBar(
                         imageVector = if (activeScreen == NOTIFICATIONS) Icons.Filled.Notifications else Icons.Outlined.Notifications,
                         contentDescription = null
                     )
-                })
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    indicatorColor = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+                )
 
             Box(
                 modifier = Modifier.size(60.dp),
@@ -106,7 +118,12 @@ fun TaskManagerBottomBar(
                         imageVector = if (activeScreen == REPORT) Icons.Filled.StackedBarChart else Icons.Outlined.StackedBarChart,
                         contentDescription = null
                     )
-                })
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    indicatorColor = MaterialTheme.colorScheme.onSurfaceVariant
+                ))
 
             NavigationBarItem(
                 selected = activeScreen == PROFILE,
@@ -121,10 +138,15 @@ fun TaskManagerBottomBar(
                         imageVector = if (activeScreen == PROFILE) Icons.Filled.Person else Icons.Outlined.Person,
                         contentDescription = null
                     )
-                })
+                },
+                colors = NavigationBarItemDefaults.colors(
+                    selectedIconColor = MaterialTheme.colorScheme.surfaceVariant,
+                    unselectedIconColor = MaterialTheme.colorScheme.onSurfaceVariant,
+                    indicatorColor = MaterialTheme.colorScheme.onSurfaceVariant
+                ))
         },
         modifier = modifier,
-        containerColor = MaterialTheme.colorScheme.background,
-        contentColor = MaterialTheme.colorScheme.onBackground,
+        containerColor = MaterialTheme.colorScheme.surfaceVariant,
+        contentColor = MaterialTheme.colorScheme.onSurfaceVariant,
     )
 }
