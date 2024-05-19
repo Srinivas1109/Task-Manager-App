@@ -3,6 +3,7 @@ package com.benki.taskmanager.presentation.task_details
 import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.benki.taskmanager.TaskScheduler
 import com.benki.taskmanager.data.constants.TaskStatus
 import com.benki.taskmanager.data.model.Project
 import com.benki.taskmanager.data.model.Task
@@ -22,7 +23,8 @@ import javax.inject.Inject
 @HiltViewModel
 class DetailedTaskViewModel @Inject constructor(
     private val taskRepository: TaskRepository,
-    private val projectRepository: ProjectRepository
+    private val projectRepository: ProjectRepository,
+    private val taskScheduler: TaskScheduler
 ) :
     ViewModel() {
     private val _task = MutableStateFlow(Task(title = ""))
@@ -133,6 +135,9 @@ class DetailedTaskViewModel @Inject constructor(
                     modifiedOn = System.currentTimeMillis()
                 )
             )
+            if(task.value.scheduled){
+                taskScheduler.scheduleTask(task.value)
+            }
             _task.update { Task(title = "") }
         }
     }

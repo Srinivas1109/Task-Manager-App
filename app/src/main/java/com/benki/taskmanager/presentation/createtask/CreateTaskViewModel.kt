@@ -2,6 +2,7 @@ package com.benki.taskmanager.presentation.createtask
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.benki.taskmanager.TaskScheduler
 import com.benki.taskmanager.data.constants.TaskStatus
 import com.benki.taskmanager.data.model.Project
 import com.benki.taskmanager.data.model.Task
@@ -18,7 +19,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class CreateTaskViewModel @Inject constructor(
-    private val taskRepository: TaskRepository, private val projectRepository: ProjectRepository
+    private val taskRepository: TaskRepository,
+    private val projectRepository: ProjectRepository,
+    private val taskScheduler: TaskScheduler
 ) : ViewModel() {
     private val _task = MutableStateFlow(Task(title = ""))
     val task = _task.asStateFlow()
@@ -111,6 +114,9 @@ class CreateTaskViewModel @Inject constructor(
                     reminder = null
                 )
             )
+            if (task.value.scheduled) {
+                taskScheduler.scheduleTask(task = task.value)
+            }
             _task.update { Task(title = "") }
         }
     }

@@ -361,13 +361,6 @@ fun DetailScreen(
                                         imageVector = Icons.Filled.AccessTime,
                                         contentDescription = null
                                     )
-//                                    Text(
-//                                        text = "%02d:%02d ${if (timePickerState.hour > 12) "PM" else "AM"}".format(
-//                                            if (timePickerState.hour > 12) timePickerState.hour % 12 else timePickerState.hour,
-//                                            timePickerState.minute
-//                                        )
-//                                    )
-
                                     task.deadlineTime?.let { time ->
                                         Text(text = convertMillisToTime(time))
                                     }

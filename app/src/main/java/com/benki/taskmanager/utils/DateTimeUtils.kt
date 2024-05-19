@@ -1,6 +1,8 @@
 package com.benki.taskmanager.utils
 
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 
 object DateTimeUtils {
     fun convertLongToDate(date: Long): String {
@@ -15,16 +17,19 @@ object DateTimeUtils {
     }
 
     fun convertTimeToMillis(hour: Int, minute: Int): Long {
-        return ((hour * 60 * 60 * 1000) + (minute * 60 * 1000)).toLong()
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, hour)
+        calendar.set(Calendar.MINUTE, minute)
+        return calendar.timeInMillis
+//        return ((hour * 60 * 60 * 1000) + (minute * 60 * 1000)).toLong()
     }
 
     fun convertMillisToTime(millis: Long): String {
-        val totalSeconds = millis / 1000
-        val hours = totalSeconds / 3600
-        val minutes = (totalSeconds % 3600) / 60
-        val formattedHours = hours.toString().padStart(2, '0')
-        val formattedMinutes = minutes.toString().padStart(2, '0')
-        return "$formattedHours:$formattedMinutes"
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = millis
+
+        val sdf = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        return sdf.format(calendar.time)
     }
 
     fun convertMillsToMinutes(mills: Long): Int {
@@ -44,5 +49,21 @@ object DateTimeUtils {
             return "%02d:%02d $amPm".format(formattedHour, minute)
         }
 
+    }
+
+    fun convertHHMMToLong(hour: Int, minutes: Int): Long {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, hour)
+        calendar.set(Calendar.MINUTE, minutes)
+        return calendar.timeInMillis
+    }
+
+    fun convertHHMMToTime(hour: Int, minutes: Int): String {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, hour)
+        calendar.set(Calendar.MINUTE, minutes)
+
+        val dateFormat = SimpleDateFormat("hh:mm a", Locale.getDefault())
+        return dateFormat.format(calendar.time)
     }
 }

@@ -99,7 +99,8 @@ fun CreateTaskScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .padding(16.dp).safeDrawingPadding(),
+            .padding(16.dp)
+            .safeDrawingPadding(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceBetween
     ) {
@@ -178,8 +179,16 @@ fun CreateTaskScreen(
             }
 
             Spacer(modifier = modifier.height(16.dp))
-            Text(text = "${task.progress.toInt()}% complete", modifier = modifier.fillMaxWidth(), textAlign = TextAlign.End)
-            Slider(value = task.progress, valueRange = 0f..100f, onValueChange = viewmodel::updateTaskProgress)
+            Text(
+                text = "${task.progress.toInt()}% complete",
+                modifier = modifier.fillMaxWidth(),
+                textAlign = TextAlign.End
+            )
+            Slider(
+                value = task.progress,
+                valueRange = 0f..100f,
+                onValueChange = viewmodel::updateTaskProgress
+            )
 
             Column(modifier = modifier.fillMaxWidth()) {
                 Spacer(modifier = modifier.heightIn(24.dp))
@@ -353,11 +362,12 @@ fun CreateTaskScreen(
                                         contentDescription = null
                                     )
                                     Text(
-                                        text = "%02d:%02d ${if (timePickerState.hour > 12) "PM" else "AM"}".format(
-                                            if (timePickerState.hour > 12) timePickerState.hour % 12 else timePickerState.hour,
+                                        text = DateTimeUtils.convertHHMMToTime(
+                                            timePickerState.hour,
                                             timePickerState.minute
                                         )
                                     )
+
                                 }
                             }
                         }
