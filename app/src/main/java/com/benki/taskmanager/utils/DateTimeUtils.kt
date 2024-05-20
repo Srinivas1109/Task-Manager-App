@@ -16,12 +16,19 @@ object DateTimeUtils {
         )
     }
 
+    fun convertMillisToDateTime(millis: Long): String {
+        val calendar = Calendar.getInstance()
+        calendar.timeInMillis = millis
+
+        val sdf = SimpleDateFormat("dd MMM yyyy hh:mm a", Locale.getDefault())
+        return sdf.format(calendar.time)
+    }
+
     fun convertTimeToMillis(hour: Int, minute: Int): Long {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, hour)
         calendar.set(Calendar.MINUTE, minute)
         return calendar.timeInMillis
-//        return ((hour * 60 * 60 * 1000) + (minute * 60 * 1000)).toLong()
     }
 
     fun convertMillisToTime(millis: Long): String {

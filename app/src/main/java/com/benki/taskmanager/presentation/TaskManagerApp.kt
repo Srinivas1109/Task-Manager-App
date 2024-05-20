@@ -58,6 +58,8 @@ import com.benki.taskmanager.presentation.components.TaskManagerBottomBar
 fun TaskManagerApp(
     startDestination: String,
     modalVisible: Boolean = false,
+    taskId: Long? = null,
+    unReadNotificationCount: Int = 0,
     toggleModal: (Boolean) -> Unit,
     updateOnBoardingVisited: () -> Unit
 ) {
@@ -99,7 +101,8 @@ fun TaskManagerApp(
                 navController = navController,
                 toggleModal = toggleModal,
                 modalVisible = modalVisible,
-                activeScreen = activeScreen
+                activeScreen = activeScreen,
+                unReadNotificationCount = unReadNotificationCount
             )
         }
     }) { contentPadding ->
@@ -210,6 +213,16 @@ fun TaskManagerApp(
     LaunchedEffect(key1 = Unit) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             notificationLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
+    }
+
+    LaunchedEffect(key1 = taskId) {
+        if(taskId != null){
+            navController.navigate("$DETAIL_TASK/$taskId"){
+                popUpTo(HOME){
+                    inclusive = true
+                }
+            }
         }
     }
 }

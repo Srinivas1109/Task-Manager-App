@@ -1,10 +1,9 @@
-package com.benki.taskmanager
+package com.benki.taskmanager.alarms
 
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.util.Log
 import com.benki.taskmanager.broadcast.TaskReceiver
 import com.benki.taskmanager.data.model.Task

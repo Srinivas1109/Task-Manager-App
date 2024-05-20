@@ -48,7 +48,9 @@ fun SetupNavGraph(
                 navigateToAllTasks = { navHostController.navigate(ALL_TASKS) })
         }
         composable(route = NavigationRoutes.NOTIFICATIONS) {
-            NotificationScreen()
+            NotificationScreen(
+                navigateToDetail = { taskId -> navHostController.navigate("$DETAIL_TASK/${taskId}") }
+            )
         }
         composable(route = NavigationRoutes.REPORT) {
             ReportScreen()
@@ -82,7 +84,10 @@ fun SetupNavGraph(
             type = NavType.StringType
         })) {
             val status = it.arguments?.getString("status")
-            Tasks(status = status!!, navigateBack = { navHostController.popBackStack() })
+            Tasks(
+                status = status!!,
+                navigateBack = { navHostController.popBackStack() },
+                navigateToDetail = { taskId -> navHostController.navigate("$DETAIL_TASK/${taskId}") })
         }
 
         composable(route = ALL_TASKS) {
@@ -91,11 +96,18 @@ fun SetupNavGraph(
                 navigateToTask = { taskId -> navHostController.navigate("$DETAIL_TASK/${taskId}") })
         }
 
-        composable(route = "$DETAIL_TASK/{taskId}", arguments = listOf(navArgument(name = "taskId") {
-            type = NavType.LongType
-        })){
+        composable(
+            route = "$DETAIL_TASK/{taskId}",
+            arguments = listOf(navArgument(name = "taskId") {
+                type = NavType.LongType
+            })
+        ) {
             val taskId = it.arguments?.getLong("taskId")
-            taskId?.let { id -> DetailScreen(taskId = id, navigateBack = { navHostController.popBackStack() }) }
+            taskId?.let { id ->
+                DetailScreen(
+                    taskId = id,
+                    navigateBack = { navHostController.popBackStack() })
+            }
         }
     }
 }

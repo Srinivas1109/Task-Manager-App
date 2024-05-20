@@ -2,4 +2,17 @@
     <string name="app_name">Task Manager</string>
     <string name="onboarding_title">Manage Your Daily Task</string>
     <string name="onboarding_description">You can organize your daily projects and tasks on a  regular basis and manage your time well and neatly.</string>
+    <string name="no_completed_tasks">No tasks completed yet. Keep pushing towards your goals!</string>
+    <string name="not_started_tasks">No new tasks to start. You\'re all caught up!</string>
+    <string name="pending_tasks">Great job! You have no tasks waiting for action.</string>
+    <string name="in_progress_tasks">You have no tasks in progress. Keep up the good work!</string>
+    <string name="on_hold_tasks">You have no tasks on hold. Everything is moving smoothly!</string>
+    <string name="cancelled_tasks">You have no cancelled tasks. All tasks are active!</string>
+    <string name="deferred_tasks">You have no deferred tasks. All tasks are being managed promptly!</string>
+    <string name="waiting_for_approval_tasks">You have no tasks waiting for approval. Everything is approved and moving forward!</string>
+    <string name="needs_review_tasks">You have no tasks needing review. Everything is up to standard!</string>
+    <string name="blocked_tasks">You have no blocked tasks. All tasks are progressing well!</string>
+    <string name="overdue_tasks">You have no overdue tasks. Well done on staying on top of things!</string>
+    <string name="reopened_tasks">ou have no reopened tasks. Everything is on the right track!</string>
+    <string name="in_review_tasks">You have no tasks in review. Everything has been checked and approved!</string>
 </resources>

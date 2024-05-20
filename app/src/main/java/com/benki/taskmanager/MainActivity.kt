@@ -37,11 +37,15 @@ class MainActivity : ComponentActivity() {
                 ) {
                     val startDestination by mainViewModel.startDestination.collectAsStateWithLifecycle()
                     val modalVisible by mainViewModel.modalVisible.collectAsStateWithLifecycle()
+                    val taskId = intent.getLongExtra("id", 0L)
+                    val unReadNotificationCount by mainViewModel.unReadNotifications.collectAsStateWithLifecycle()
                     TaskManagerApp(
                         startDestination = startDestination,
                         updateOnBoardingVisited = mainViewModel::updateOnBoardingVisited,
                         modalVisible = modalVisible,
-                        toggleModal = mainViewModel::toggleModal
+                        toggleModal = mainViewModel::toggleModal,
+                        taskId = if (taskId > 0L) taskId else null,
+                        unReadNotificationCount = unReadNotificationCount
                     )
                 }
             }

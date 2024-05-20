@@ -2,7 +2,7 @@ package com.benki.taskmanager.presentation.createtask
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.benki.taskmanager.TaskScheduler
+import com.benki.taskmanager.alarms.TaskScheduler
 import com.benki.taskmanager.data.constants.TaskStatus
 import com.benki.taskmanager.data.model.Project
 import com.benki.taskmanager.data.model.Task

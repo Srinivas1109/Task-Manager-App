@@ -4,8 +4,10 @@ import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import com.benki.taskmanager.data.dao.ProjectDao
 import com.benki.taskmanager.data.dao.TaskDao
+import com.benki.taskmanager.data.dao.TaskNotificationDao
 import com.benki.taskmanager.data.dao.TaskWithProjectDao
 import com.benki.taskmanager.data.repository.ProjectRepository
+import com.benki.taskmanager.data.repository.TaskNotificationRepository
 import com.benki.taskmanager.data.repository.TaskRepository
 import com.benki.taskmanager.data.repository.TaskWithProjectRepository
 import com.benki.taskmanager.data.repository.UserPreferencesRepository
@@ -31,4 +33,8 @@ object RepositoryModule {
     @Provides
     fun provideTaskWithProjectRepository(taskWithProjectDao: TaskWithProjectDao): TaskWithProjectRepository =
         TaskWithProjectRepository(taskWithProjectDao = taskWithProjectDao)
+
+    @Provides
+    fun provideTaskNotificationRepository(taskNotificationDao: TaskNotificationDao): TaskNotificationRepository =
+        TaskNotificationRepository(taskNotificationDao = taskNotificationDao)
 }
