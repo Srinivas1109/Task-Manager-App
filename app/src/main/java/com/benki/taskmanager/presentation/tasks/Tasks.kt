@@ -91,15 +91,8 @@ fun Tasks(
                         TaskStatus.IN_PROGRESS -> R.string.in_progress_tasks
                         TaskStatus.NOT_STARTED -> R.string.not_started_tasks
                         TaskStatus.PENDING -> R.string.pending_tasks
-                        TaskStatus.ON_HOLD -> R.string.on_hold_tasks
                         TaskStatus.CANCELLED -> R.string.cancelled_tasks
-                        TaskStatus.DEFERRED -> R.string.deferred_tasks
-                        TaskStatus.WAITING_FOR_APPROVAL -> R.string.waiting_for_approval_tasks
                         TaskStatus.NEEDS_REVIEW -> R.string.needs_review_tasks
-                        TaskStatus.BLOCKED -> R.string.blocked_tasks
-                        TaskStatus.OVERDUE -> R.string.overdue_tasks
-                        TaskStatus.REOPENED -> R.string.reopened_tasks
-                        TaskStatus.IN_REVIEW -> R.string.in_review_tasks
                     }
 
                     Text(
