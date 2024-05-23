@@ -9,4 +9,7 @@ import kotlinx.coroutines.flow.Flow
 interface TaskWithProjectDao {
     @Query("SELECT * FROM tasks ORDER BY modifiedOn DESC")
     fun getTasksWithProject(): Flow<List<TaskWithProject>>
+
+    @Query("SELECT * FROM tasks WHERE projectId IS NOT NULL ORDER BY modifiedOn DESC")
+    fun getTaskReports(): Flow<List<TaskWithProject>>
 }

@@ -8,4 +8,5 @@ class TaskWithProjectRepository(private val taskWithProjectDao: TaskWithProjectD
     fun getTasksWithProject(): Flow<List<TaskWithProject>> =
         taskWithProjectDao.getTasksWithProject()
 
+    fun getTaskReports(): Flow<List<TaskWithProject>> = taskWithProjectDao.getTaskReports()
 }

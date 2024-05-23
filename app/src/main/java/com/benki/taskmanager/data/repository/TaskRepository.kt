@@ -25,5 +25,4 @@ class TaskRepository(private val taskDao: TaskDao) {
 
     fun getTaskById(id: Long) : Flow<Task> = taskDao.getTaskById(id)
 
-
 }

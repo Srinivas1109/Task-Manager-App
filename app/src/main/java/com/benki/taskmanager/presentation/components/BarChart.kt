@@ -37,6 +37,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -100,14 +101,16 @@ fun BarChart(
     data: List<BarData> = emptyList(),
     maxRange: Float = 50f,
     barWidth: Dp = 40.dp,
-    height: Dp = 200.dp
+    height: Dp = 150.dp
 ) {
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Surface(
             color = MaterialTheme.colorScheme.surfaceVariant,
             shape = MaterialTheme.shapes.small
         ) {
-            LazyRow(modifier = modifier.fillMaxWidth().height(height)) {
+            LazyRow(modifier = modifier
+                .fillMaxWidth()
+                .height(height)) {
                 items(items = data) { barData ->
                     Bar(
                         barWidth = barWidth,
@@ -122,7 +125,9 @@ fun BarChart(
         }
         LazyVerticalGrid(
             columns = GridCells.Adaptive(120.dp),
-            modifier = modifier.fillMaxWidth()
+            modifier = modifier
+                .fillMaxWidth()
+                .height(30.dp)
         ) {
             items(items = TaskStatus.entries) {
                 Row(
@@ -131,10 +136,10 @@ fun BarChart(
                 ) {
                     Box(
                         modifier = modifier
-                            .size(15.dp)
-                            .background(color = it.color, shape = MaterialTheme.shapes.small)
+                            .size(5.dp)
+                            .background(color = it.color, shape = RectangleShape)
                     )
-                    Text(text = it.statusText, maxLines = 1, overflow = TextOverflow.Ellipsis)
+                    Text(text = it.statusText, maxLines = 1, overflow = TextOverflow.Ellipsis, fontSize = MaterialTheme.typography.bodySmall.fontSize)
                 }
             }
         }
