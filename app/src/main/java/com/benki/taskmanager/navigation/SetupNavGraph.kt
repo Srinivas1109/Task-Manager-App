@@ -20,7 +20,7 @@ import com.benki.taskmanager.presentation.createtask.CreateTaskScreen
 import com.benki.taskmanager.presentation.home.HomeScreen
 import com.benki.taskmanager.presentation.notifications.NotificationScreen
 import com.benki.taskmanager.presentation.onboarding.OnBoardingScreen
-import com.benki.taskmanager.presentation.profile.ProfileScreen
+import com.benki.taskmanager.presentation.info.InfoScreen
 import com.benki.taskmanager.presentation.report.ReportScreen
 import com.benki.taskmanager.presentation.tasks.Tasks
 
@@ -55,8 +55,8 @@ fun SetupNavGraph(
         composable(route = NavigationRoutes.REPORT) {
             ReportScreen()
         }
-        composable(route = NavigationRoutes.PROFILE) {
-            ProfileScreen()
+        composable(route = NavigationRoutes.INFO) {
+            InfoScreen()
         }
         composable(route = NavigationRoutes.CREATE_TASK) {
             CreateTaskScreen(onBackButtonClick = { navHostController.popBackStack() },

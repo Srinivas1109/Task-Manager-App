@@ -15,4 +15,5 @@
     <string name="overdue_tasks">You have no overdue tasks. Well done on staying on top of things!</string>
     <string name="reopened_tasks">ou have no reopened tasks. Everything is on the right track!</string>
     <string name="in_review_tasks">You have no tasks in review. Everything has been checked and approved!</string>
+    <string name="app_info">Create tasks and projects, linking tasks to projects as needed. Schedule tasks with notifications and update task statuses (e.g., In Progress, On Hold, Completed). View reports featuring bar graphs on task statuses and project-specific data. Regularly update tasks and check reports to stay organized and productive.</string>
 </resources>

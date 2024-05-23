@@ -3,19 +3,17 @@ package com.benki.taskmanager.presentation.components
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.safeDrawingPadding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material.icons.filled.NotificationsActive
-import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.StackedBarChart
 import androidx.compose.material.icons.filled.Task
 import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Info
 import androidx.compose.material.icons.outlined.Notifications
-import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.StackedBarChart
 import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.Icon
@@ -24,7 +22,6 @@ import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.benki.taskmanager.data.constants.NavigationRoutes.HOME
 import com.benki.taskmanager.data.constants.NavigationRoutes.NOTIFICATIONS
-import com.benki.taskmanager.data.constants.NavigationRoutes.PROFILE
+import com.benki.taskmanager.data.constants.NavigationRoutes.INFO
 import com.benki.taskmanager.data.constants.NavigationRoutes.REPORT
 
 @Composable
@@ -144,16 +141,16 @@ fun TaskManagerBottomBar(
             )
 
             NavigationBarItem(
-                selected = activeScreen == PROFILE,
+                selected = activeScreen == INFO,
                 onClick = {
                     if (modalVisible) {
                         toggleModal(false)
                     }
-                    navController.navigate(PROFILE)
+                    navController.navigate(INFO)
                 },
                 icon = {
                     Icon(
-                        imageVector = if (activeScreen == PROFILE) Icons.Filled.Person else Icons.Outlined.Person,
+                        imageVector = if (activeScreen == INFO) Icons.Filled.Info else Icons.Outlined.Info,
                         contentDescription = null
                     )
                 },
